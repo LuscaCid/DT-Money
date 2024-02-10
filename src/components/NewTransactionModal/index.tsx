@@ -1,8 +1,22 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import { Close, Content, Overlay, TypeTransactionButton, TypeTransactionSection } from './styles'
-import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react'
+import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react' 
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+
+const formSchema = z.object({
+  description : z.string().min(1),
+  price : z.string(),
+  category : z.string(),
+  typeTransaction : "income" | "outcome"
+})
+
+type NewTransactionFormType = z.infer<typeof formSchema>
 
 export const NewTransactionModal = () => {
+
+  const newTransactionForm = useForm()
+
   return (
     <Dialog.Portal>
       <Overlay />
