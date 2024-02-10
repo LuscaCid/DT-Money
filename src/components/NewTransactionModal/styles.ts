@@ -4,11 +4,9 @@ import * as Group from '@radix-ui/react-radio-group'
 
 export const Overlay = styled(Dialog.Overlay)`
   background-color:rgba(0,0,0,0.75);
-  opacity: 0.5;
   width: 100vw;
   height: 100vh;
   position: fixed;
-  
   inset: 0;
 `
 
@@ -68,6 +66,10 @@ export const Close = styled(Dialog.Close)`
   padding: .3rem;
   cursor: pointer;
   line-height: 0;
+  border-radius: 3px;
+  &:hover{
+    color: ${({theme}) => theme['gray-300']};
+  }
 `
 
 export const TypeTransactionSection = styled(Group.RadioGroup)`
@@ -75,6 +77,10 @@ export const TypeTransactionSection = styled(Group.RadioGroup)`
   grid-template-columns: repeat(2, 1fr);
   width: 100%;
   gap: 1rem;
+  &:focus{
+    outline: none;
+    box-shadow: none;
+  }
 `
 interface TransactionButtonType {
   variant : 'income' | 'outcome'
