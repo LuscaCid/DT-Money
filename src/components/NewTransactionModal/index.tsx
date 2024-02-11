@@ -8,10 +8,12 @@ const formSchema = z.object({
   description : z.string().min(1),
   price : z.string(),
   category : z.string(),
-  typeTransaction : "income" | "outcome"
+  typeTransaction : z.enum(['income', 'outcome'])
 })
 
 type NewTransactionFormType = z.infer<typeof formSchema>
+
+
 
 export const NewTransactionModal = () => {
 

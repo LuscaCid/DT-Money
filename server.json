@@ -5,7 +5,7 @@
       "createdAt" : "2022-01-01",
       "category" : "alimentacao",
       "price" : 50,
-      "type" : "outcome",
+      "type" : "income",
       "description" : "hamburger"
     },
     {
