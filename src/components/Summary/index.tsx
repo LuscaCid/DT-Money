@@ -2,7 +2,26 @@ import { SummaryCard, SummaryContainer } from "./styles"
 import greenArrow from '../../assets/greenarrow.svg'
 import redArrow from '../../assets/redarrow.svg'
 import moneyIcon from '../../assets/moneyIcon.svg'
+import { useTransactionsContext } from "../../contexts/transactionsContext"
+import { priceFormatter } from "../../utils/formatter"
 export const Summary = () => {
+
+  const { transactions } = useTransactionsContext()
+
+  const summary = transactions.reduce((acc, transaction) => {
+    if(transaction.type === 'income') {
+      acc.income += transaction.price
+    }
+    if(transaction.type === 'outcome'){
+      acc.outcome += transaction.price
+    }
+    acc.total = acc.income - acc.outcome
+    return acc
+  }, {
+    income : 0,
+    outcome : 0,
+    total : 0
+  })
   return (
     <SummaryContainer>
       <SummaryCard>
@@ -11,7 +30,7 @@ export const Summary = () => {
           <img src={greenArrow} alt="green-arrow" />
         </header>
         <span className="quantity">
-          R$780,00
+          {priceFormatter.format(summary.income)}
         </span>
       </SummaryCard>
       <SummaryCard>
@@ -20,7 +39,7 @@ export const Summary = () => {
           <img src={redArrow} alt="green-arrow" />
         </header>
         <span className="quantity">
-          R$200,00
+          {priceFormatter.format(summary.outcome)}
         </span>
       </SummaryCard>
       <SummaryCard>
@@ -29,7 +48,7 @@ export const Summary = () => {
           <img src={moneyIcon} alt="green-arrow" />
         </header>
         <span className="quantity">
-          R$1200,00
+          {priceFormatter.format(summary.total)}
         </span>
       </SummaryCard>
       

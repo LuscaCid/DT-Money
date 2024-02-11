@@ -24,3 +24,26 @@ npx json-server server.json -w
 
 isso basicamente para ele ficar observando alteracoes que forem feitas na base de dados
 
+````js
+const summary = transactions.reduce((acc, transaction) => {
+    if(transaction.type === 'income') {
+      acc.income += transaction.price
+    }
+    if(transaction.type === 'outcome'){
+      acc.outcome += transaction.price
+    }
+    acc.total = acc.income - acc.outcome
+    return acc
+  }, {
+    income : 0,
+    outcome : 0,
+    total : 0
+  })
+````
+
+estrutura padrao de um reduce, no primeiro parametro se passa a funcao que vai trabalhar com os dados que irao ser reduzidos do array e no segundo parametro o valor inicial que este elemento acumulador terá.
+
+no primeiro argumento da callback passada se encontra o acumulador que é do tipo, que possui o formato passado no segundo argumento da funcao reduce.
+
+e no segundo argumento da callback, se encontra cada elemento do array que está reduzindo.
+

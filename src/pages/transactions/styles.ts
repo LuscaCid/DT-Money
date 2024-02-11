@@ -31,12 +31,8 @@ interface TablePriceProps {
 }
 export const PriceTd = styled(TableData)<TablePriceProps>`
   color:  ${({theme, variant}) => variant === "income" ? theme['green-300'] : theme['red-300']};
-  display: flex;
-  gap: .2rem;
-  &::before{
-    content: '${({variant}) => variant === "outcome" && "-"}';
-    color: ${({theme, variant}) => variant === "income" ? theme['green-300'] : theme['red-300']};;
-  }
+ 
+  
 
 
 `

@@ -1,28 +1,15 @@
 
-import { useEffect, useState } from "react"
-import { Header } from "../../components/Header"
+import { PriceTd, TableComponent, TableContainer, TableData } from "./styles"
+import { useTransactionsContext } from "../../contexts/transactionsContext"
+import { ITransactionsType } from "../../@types/transactions"
 import { InputSearch } from "../../components/InputSearch"
 import { Summary } from "../../components/Summary"
-import { PriceTd, TableComponent, TableContainer, TableData } from "./styles"
-import { api } from "../../services/api"
-
-interface ITransactionsType {
-  id : number
-  createdAt: string;
-  category: string;
-  price: string;
-  type: "income" | "outcome";
-  description : string
-}
+import { Header } from "../../components/Header"
+import { useEffect } from "react"
+import { dateFormatter, priceFormatter } from "../../utils/formatter"
 
 export const Transactions = () => {
-  const [transactionsDisplay, setTransactionsDisplay] = useState<ITransactionsType [] | any>([])
-
-  const loadTransactionsFromDatabase = async () : Promise<void> =>{
-    const { data } = await api.get<ITransactionsType[]>('/transactions')
-    setTransactionsDisplay(data)
-  }
-  
+  const {transactions, loadTransactionsFromDatabase} = useTransactionsContext()  
   useEffect(() => {
     loadTransactionsFromDatabase()
   }, [])
@@ -36,13 +23,16 @@ export const Transactions = () => {
         <TableComponent>
           <tbody>
            {
-            transactionsDisplay.length > 0 && transactionsDisplay.map((element : ITransactionsType) =>{
+            transactions.length > 0 && transactions.map((element : ITransactionsType) =>{
               return (
                 <tr key={element.id}>
                   <TableData>{element.description}</TableData>
-                  <PriceTd variant={element.type}>{element.price}</PriceTd>
+                  <PriceTd variant={element.type}>
+                    {element.type === "outcome" && '- '}
+                    {priceFormatter.format(element.price)}
+                    </PriceTd>
                   <TableData>{element.category}</TableData>
-                  <TableData>{element.createdAt}</TableData>
+                  <TableData>{dateFormatter.format(new Date(element.createdAt))}</TableData>
                 </tr>
               )
             })

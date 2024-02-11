@@ -2,7 +2,7 @@
   "transactions" : [
     {
       "id" : 1,
-      "createdAt" : "2022-01-01",
+      "createdAt" : "2024-01-22T13:22:18.848Z",
       "category" : "alimentacao",
       "price" : 50,
       "type" : "income",
@@ -10,7 +10,7 @@
     },
     {
       "id" : 2,
-      "createdAt" : "2022-02-01",
+      "createdAt" : "2024-02-11T13:22:18.848Z",
       "category" : "Vendas",
       "price" : 13000,
       "type" : "income",
@@ -18,9 +18,17 @@
     },
     {
       "id" : 3,
-      "createdAt" : "2022-03-01",
+      "createdAt" : "2024-02-11T13:22:18.848Z",
+      "category" : "instrumento",
+      "price" : 1000,
+      "type" : "outcome",
+      "description" : "lencol"
+    },
+    {
+      "id" : 4,
+      "createdAt" : "2024-02-11T13:22:18.848Z",
       "category" : "Casa",
-      "price" : 100,
+      "price" : 10000,
       "type" : "outcome",
       "description" : "lencol"
     }
