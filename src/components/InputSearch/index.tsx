@@ -1,20 +1,28 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import { ButtonSearch, Input, InputContainer } from "./styles"
 import { MagnifyingGlass } from "phosphor-react"
 import {useForm} from 'react-hook-form'
 import { z } from 'zod'
 
 const FormDataSchema = z.object({
-  search: z.string()
+  query: z.string()
 })
 type FormDataSchemaType = z.infer<typeof FormDataSchema>
 export const InputSearch =( ) => {
   
 
-  const { register, handleSubmit, watch, reset}  = useForm<FormDataSchemaType>()
+  const { register, handleSubmit, watch, reset, formState : {isSubmitting}}  = useForm<FormDataSchemaType>({
+    resolver  : zodResolver(FormDataSchema),
+    defaultValues : {
+      query: ""
+    }
+  })
 
-  const searchValue = watch('search')
+  const searchValue = watch('query')
 
-  const handleSearch = (data : FormDataSchemaType) => {
+  const handleSearch = async (data : FormDataSchemaType) => {
+    if(!searchValue)return
+    await new Promise(resolve => setTimeout(resolve, 2500))
     console.log(data)
     reset()
     console.log(searchValue)
@@ -27,9 +35,9 @@ export const InputSearch =( ) => {
       <Input 
         placeholder="Busque uma transação" 
         type="text"
-        {...register("search")}
+        {...register("query")}
       />
-      <ButtonSearch disabled={searchValue == ''} type="submit">
+      <ButtonSearch disabled={isSubmitting} type="submit">
           <MagnifyingGlass size={20} />
           Buscar
       </ButtonSearch>

@@ -3,21 +3,35 @@ import { Close, Content, Overlay, TypeTransactionButton, TypeTransactionSection 
 import { ArrowCircleDown, ArrowCircleUp, X } from 'phosphor-react' 
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { zodResolver } from '@hookform/resolvers/zod'
 
 const formSchema = z.object({
   description : z.string().min(1),
-  price : z.string(),
+  price : z.number(),
   category : z.string(),
-  typeTransaction : z.enum(['income', 'outcome'])
+ // typeTransaction : z.enum(['income', 'outcome'])//é tratado tbm como required
 })
 
 type NewTransactionFormType = z.infer<typeof formSchema>
 
-
-
 export const NewTransactionModal = () => {
 
-  const newTransactionForm = useForm()
+  const newTransactionForm = useForm<NewTransactionFormType>({
+    resolver : zodResolver(formSchema),
+    defaultValues : {
+      category : '',
+      description : '',
+      price : 0
+    }
+  })
+  const {register, handleSubmit, watch, formState : {isSubmitting}} = newTransactionForm
+
+  const handleCreateNewTransaction = async (data : NewTransactionFormType) => {
+    await new Promise(resolve => setTimeout(resolve, 2500))
+    console.log(data)
+  }
+  const formattedPriceAllTime = watch('price')
+
 
   return (
     <Dialog.Portal>
@@ -27,10 +41,29 @@ export const NewTransactionModal = () => {
           <X size={24} />
         </Close>
         <Dialog.Title>Nova Transação</Dialog.Title>
-        <form action="">
-          <input type="text" placeholder='Descrição' required />
-          <input type="text" placeholder='Preço' required />
-          <input type="text" placeholder='Categoria' required/>
+        <form action="" onSubmit={handleSubmit(handleCreateNewTransaction)}>
+          <input 
+            type="text" 
+            placeholder='Descrição' 
+            required 
+            {...register('description')} 
+          />
+
+          <input 
+            type="text"
+            placeholder='Preço' 
+            required 
+            
+            {...register('price', {valueAsNumber : true})}
+          />
+
+          <input 
+            type="text" 
+            placeholder='Categoria' 
+            required 
+            {...register('category')}
+          />
+
           <TypeTransactionSection>
             <TypeTransactionButton value='income' variant='income'>
             Entrada 
@@ -42,7 +75,7 @@ export const NewTransactionModal = () => {
             </TypeTransactionButton>
             
           </TypeTransactionSection>
-          <button type='submit'>
+          <button type='submit' disabled = {isSubmitting}>
             Registrar
           </button>
         </form>

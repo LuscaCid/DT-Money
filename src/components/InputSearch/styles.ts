@@ -42,7 +42,13 @@ export const ButtonSearch = styled.button`
   color: ${({theme}) => theme["gray-100"]};
   padding: 1rem;
   transition: background 0.2s;
-  &:hover{
+  cursor: pointer;
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  &:not(:disabled):hover{
     background: ${({theme}) => theme["green-500"]};
     fill: ${({theme}) => theme["gray-100"]};
   }
