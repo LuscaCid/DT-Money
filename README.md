@@ -1,6 +1,6 @@
 # Mais um projeto com react
 
-## Desta vez introduzindo o DT-Money
+# Desta vez introduzindo o DT-Money
 
 ## Aprendizados 
 
@@ -47,5 +47,55 @@ no primeiro argumento da callback passada se encontra o acumulador que é do tip
 
 e no segundo argumento da callback, se encontra cada elemento do array que está reduzindo.
 
-## useMemo e useCallback
+## useMemo, useCallback
 
+usados para estabelecer uma forma de nao realocar em memoria funcoes ou variaveis que nao precisem ser recriadas 
+devido a alteracoes em componentes pais, apenas passando um array de dependencias...
+
+````js
+const summary = useMemo(() => {
+      transactions.reduce((acc, transaction) => {
+        if(transaction.type === 'income') {
+          acc.income += transaction.price
+        }
+        if(transaction.type === 'outcome'){
+          acc.outcome += transaction.price
+        }
+        acc.total = acc.income - acc.outcome
+        return acc
+      }, {
+        income : 0,
+        outcome : 0,
+        total : 0
+      })
+    }, [transactions])
+````
+
+transactions é um array de objetos que contém todas as transacoes da aplicacoes, este calculo so sera realizado 
+novamente quando o array aumentar ou diminuir de tamanho
+
+`````js
+const [transactions, setTransactions] = useState<ITransactionsType []>([])
+
+const fetchTransactions = useCallback(async (query? : string) : Promise<void> =>{
+    const response = await api.get('transactions', {
+        params : {
+            description : query
+        }
+    })
+    setTransactions(response.data)
+}, [])
+
+//se caso eu possuir uma funcao que eu quero que apenas seja realocada em memoria uma unica vez quando a aplicação
+//iniciar, eu posso usar o useCallback passando as dependencias de valores que ela possui para nao ficar desatualizada
+const postTransaction = useCallback(async (data : ITransactionsType ) => {
+    const response = await api.post('transactions', {
+        description : data.description,
+        price : data.price,
+        category : data.category,
+        type : data.type,
+        createdAt : new Date().toISOString()
+      })
+    setTransactions(prevState => [response.data ,...prevState])
+}, []) 
+````

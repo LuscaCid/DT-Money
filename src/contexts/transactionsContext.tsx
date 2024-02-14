@@ -31,8 +31,6 @@ export const TransactionsContextProvider = ({children}: TransactionsContextProvi
             type : data.type,
             createdAt : new Date().toISOString()
           })
-          
-
         setTransactions(prevState => [response.data ,...prevState])
     }, []) 
 
