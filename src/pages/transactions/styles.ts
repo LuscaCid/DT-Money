@@ -3,8 +3,10 @@ import styled from 'styled-components'
 export const TableContainer = styled.section`
   width: 100%;
   max-width: 1100px;
+  max-height: 400px;
   margin: 0 auto; 
   padding : 0 1.5rem ;
+  overflow-y: scroll;
 `
 
 export const TableComponent =  styled.table`
@@ -18,7 +20,7 @@ export const TableData = styled.td`
   padding:1.25rem 2rem ;
   color: ${({theme}) => theme['gray-300']};
   &:first-child {
-    width: 45%;
+    width: 50%;
     border-radius: 5px 0 0 5px;
   }  
   &:last-child {

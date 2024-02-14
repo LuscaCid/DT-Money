@@ -3,31 +3,40 @@ import { ButtonSearch, Input, InputContainer } from "./styles"
 import { MagnifyingGlass } from "phosphor-react"
 import {useForm} from 'react-hook-form'
 import { z } from 'zod'
+import { TransactionsContext } from "../../contexts/transactionsContext"
+import { useContextSelector } from "use-context-selector"
+import { memo } from "react"
 
 const FormDataSchema = z.object({
   query: z.string()
 })
 type FormDataSchemaType = z.infer<typeof FormDataSchema>
-export const InputSearch =( ) => {
-  
 
-  const { register, handleSubmit, watch, reset, formState : {isSubmitting}}  = useForm<FormDataSchemaType>({
+const InputSearchComponent = () => {
+  
+  const fetchTransactions = useContextSelector(TransactionsContext, (context) => {
+    return context.fetchTransactions
+  })
+  const { 
+    register, 
+    handleSubmit,  
+    reset, 
+    formState : {isSubmitting}} = useForm<FormDataSchemaType>({
     resolver  : zodResolver(FormDataSchema),
     defaultValues : {
       query: ""
     }
   })
 
-  const searchValue = watch('query')
-
   const handleSearch = async (data : FormDataSchemaType) => {
-    if(!searchValue)return
-    await new Promise(resolve => setTimeout(resolve, 2500))
-    console.log(data)
+    //if(!searchValue)return
+     
+    await fetchTransactions(data.query)
+    
     reset()
-    console.log(searchValue)
+    
   }
-
+ 
   return (
     <InputContainer
     onSubmit={handleSubmit(handleSearch)}
@@ -40,7 +49,9 @@ export const InputSearch =( ) => {
       <ButtonSearch disabled={isSubmitting} type="submit">
           <MagnifyingGlass size={20} />
           Buscar
-      </ButtonSearch>
+      </ButtonSearch> 
     </InputContainer>
   )
 }
+
+export const InputSearch = memo(InputSearchComponent)

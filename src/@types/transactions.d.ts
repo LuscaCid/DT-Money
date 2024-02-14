@@ -1,5 +1,5 @@
 export interface ITransactionsType {
-    id : number
+    id? : number
     createdAt: string;
     category: string;
     price: number;
@@ -9,8 +9,8 @@ export interface ITransactionsType {
   
 export interface ITransactionsContext{
     transactions : ITransactionsType []
-    addNewTransaction : (newTransaction : ITransactionsType) => void
-    loadTransactionsFromDatabase : () => void
+    postTransaction : (data : ITransactionsType) => Promise<void>
+    fetchTransactions : (query? : string) => Promise<void>
 }
 
 export interface TransactionsContextProviderType {

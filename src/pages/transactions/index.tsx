@@ -1,18 +1,24 @@
 
 import { PriceTd, TableComponent, TableContainer, TableData } from "./styles"
-import { useTransactionsContext } from "../../contexts/transactionsContext"
+import { TransactionsContext } from "../../contexts/transactionsContext"
 import { ITransactionsType } from "../../@types/transactions"
 import { InputSearch } from "../../components/InputSearch"
 import { Summary } from "../../components/Summary"
 import { Header } from "../../components/Header"
 import { useEffect } from "react"
 import { dateFormatter, priceFormatter } from "../../utils/formatter"
+import { useContextSelector } from "use-context-selector"
 
 export const Transactions = () => {
-  const {transactions, loadTransactionsFromDatabase} = useTransactionsContext()  
+  const {transactions, fetchTransactions} = useContextSelector(TransactionsContext, (context) => {
+    return {
+      transactions : context.transactions,
+      fetchTransactions : context.fetchTransactions
+    }
+  })  
   useEffect(() => {
-    loadTransactionsFromDatabase()
-  }, [])
+    fetchTransactions()
+  }, [ fetchTransactions ])
   
   return (
     <div>

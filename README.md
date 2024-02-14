@@ -47,3 +47,5 @@ no primeiro argumento da callback passada se encontra o acumulador que é do tip
 
 e no segundo argumento da callback, se encontra cada elemento do array que está reduzindo.
 
+## useMemo e useCallback
+
